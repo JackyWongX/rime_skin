@@ -26,8 +26,7 @@
     body {
       margin: 0;
       min-height: 100vh;
-      color: var(--text);
-      background: var(--bg);
+      color: #000;
     }
 
     button,
@@ -37,9 +36,8 @@
     }
 
     button {
-      border: 1px solid var(--accent);
-      background: var(--accent);
-      color: #fff;
+      border: 1px solid transparent;
+      color: #000;
       border-radius: 6px;
       padding: 7px 11px;
       cursor: pointer;
@@ -47,37 +45,33 @@
     }
 
     button:hover {
-      background: var(--accent-2);
-      border-color: var(--accent-2);
+      border-color: transparent;
     }
 
     button.secondary {
-      background: #fff;
-      color: var(--text);
-      border-color: var(--line);
+      color: #000;
+      border-color: transparent;
     }
 
     button.secondary:hover {
-      background: #f2f4f7;
-      border-color: #c5ccd8;
+      border-color: transparent;
     }
 
     input[type="text"] {
       width: 100%;
-      border: 1px solid var(--line);
+      border: 1px solid transparent;
       border-radius: 6px;
       padding: 7px 8px;
-      color: var(--text);
-      background: #fff;
+      color: #000;
+      background: transparent;
     }
 
     input[type="color"] {
       width: 56px;
       height: 34px;
       padding: 0;
-      border: 1px solid #9eb7c6;
+      border: 1px solid transparent;
       border-radius: 6px;
-      background: transparent;
       cursor: pointer;
       opacity: 0;
     }
@@ -94,8 +88,7 @@
       justify-content: space-between;
       gap: 16px;
       padding: 14px 18px;
-      border-bottom: 1px solid var(--line);
-      background: #fff;
+      border-bottom: 1px solid transparent;
     }
 
     .title {
@@ -111,12 +104,12 @@
 
     .title p {
       margin: 4px 0 0;
-      color: var(--muted);
+      color: #000;
       font-size: 13px;
     }
 
     .status {
-      color: var(--muted);
+      color: #000;
       font-size: 13px;
       text-align: right;
     }
@@ -132,6 +125,8 @@
       gap: 12px;
       padding: 12px;
       min-height: 0;
+      background:
+        linear-gradient(to right, transparent calc((100% - 24px) * .45 + 12px), #cbd5e1 calc((100% - 24px) * .45 + 12px), #cbd5e1 calc((100% - 24px) * .45 + 13px), transparent calc((100% - 24px) * .45 + 13px));
     }
 
     .code-panel {
@@ -150,8 +145,7 @@
       min-height: 0;
       display: flex;
       flex-direction: column;
-      background: var(--panel);
-      border: 1px solid var(--line);
+      border: 1px solid transparent;
       border-radius: 8px;
       overflow: hidden;
     }
@@ -162,8 +156,7 @@
       justify-content: space-between;
       gap: 8px;
       padding: 10px 12px;
-      border-bottom: 1px solid var(--line);
-      background: var(--panel-2);
+      border-bottom: 1px solid transparent;
     }
 
     .panel-head h2 {
@@ -183,9 +176,8 @@
       display: inline-flex;
       align-items: center;
       padding: 2px;
-      border: 1px solid var(--line);
+      border: 1px solid transparent;
       border-radius: 7px;
-      background: #fff;
     }
 
     .segmented button {
@@ -193,13 +185,11 @@
       border: 0;
       border-radius: 5px;
       padding: 5px 8px;
-      background: transparent;
-      color: var(--muted);
+      color: #000;
     }
 
     .segmented button.active {
-      background: var(--accent);
-      color: #fff;
+      color: #000;
     }
 
     .body {
@@ -214,11 +204,10 @@
       min-height: 100%;
       height: 100%;
       resize: none;
-      border: 1px solid #cbd2dd;
+      border: 1px solid transparent;
       border-radius: 7px;
       padding: 12px;
-      background: #ffffff;
-      color: #111827;
+      background: transparent;
       font-family: var(--mono);
       font-size: 13px;
       line-height: 1.55;
@@ -227,19 +216,38 @@
 
     .color-list {
       display: grid;
-      gap: 10px;
+      gap: 12px;
+    }
+
+    .color-group {
+      display: grid;
+      gap: 8px;
+    }
+
+    .color-group-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2px 4px;
+      color: #000;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .color-group-title span {
+      color: #000;
+      font-size: 12px;
+      font-weight: 400;
     }
 
     .color-row {
-      border: 1px solid var(--line);
+      border: 1px solid transparent;
       border-radius: 8px;
-      background: #fff;
       padding: 8px;
     }
 
     .color-row.invalid {
-      border-color: #f3b5af;
-      background: #fff7f6;
+      border-color: transparent;
     }
 
     .color-meta {
@@ -254,7 +262,7 @@
     .swatch {
       width: 34px;
       height: 34px;
-      border: 1px solid #cbd2dd;
+      border: 1px solid transparent;
       border-radius: 6px;
     }
 
@@ -267,7 +275,7 @@
 
     .field-label {
       margin-top: 2px;
-      color: var(--muted);
+      color: #000;
       font-size: 12px;
     }
 
@@ -285,9 +293,8 @@
       width: 62px;
       height: 34px;
       align-items: center;
-      border: 1px solid #a7b6c3;
+      border: 1px solid transparent;
       border-radius: 6px;
-      background: #f8fafc;
       overflow: hidden;
     }
 
@@ -298,7 +305,7 @@
       top: 5px;
       width: 24px;
       height: 22px;
-      border: 1px solid #98a2b3;
+      border: 1px solid transparent;
       border-radius: 4px;
       background: var(--current-color, #000);
       pointer-events: none;
@@ -311,13 +318,12 @@
       transform: translateY(-50%);
       width: 16px;
       height: 16px;
-      color: #475467;
+      color: #000;
       pointer-events: none;
     }
 
     .picker-wrap:hover {
-      border-color: var(--accent);
-      background: #eef7fa;
+      border-color: transparent;
     }
 
     .color-row-content {
@@ -330,7 +336,7 @@
     .field-error {
       display: none;
       margin-top: 7px;
-      color: var(--danger);
+      color: #000;
       font-size: 12px;
     }
 
@@ -346,12 +352,11 @@
     }
 
     .empty-note {
-      color: var(--muted);
+      color: #000;
       font-size: 14px;
       padding: 14px;
-      border: 1px dashed #c8cfd9;
+      border: 1px dashed transparent;
       border-radius: 8px;
-      background: #fbfcfd;
     }
 
     .preview-stage {
@@ -360,7 +365,6 @@
       flex-direction: column;
       gap: 0;
       padding: 26px 22px;
-      color: #111827;
       border-radius: 7px;
     }
 
@@ -371,18 +375,20 @@
       align-items: center;
       gap: 8px;
       padding: 0 10px;
-      border: 1px solid #8f95a3;
-      border-bottom: 2px solid #164df5;
-      background: #fff;
-      color: #1f2937;
+      border: 1px solid transparent;
+      border-bottom: 2px solid transparent;
       font-family: var(--mono);
       font-size: 14px;
+    }
+
+    .preview-stage .desktop-line {
+      color: #1f2937;
     }
 
     .search-icon {
       width: 13px;
       height: 13px;
-      border: 1.7px solid #475467;
+      border: 1.7px solid transparent;
       border-radius: 999px;
       position: relative;
       flex: 0 0 auto;
@@ -395,7 +401,6 @@
       height: 1.7px;
       right: -5px;
       bottom: -3px;
-      background: #475467;
       transform: rotate(45deg);
       border-radius: 999px;
     }
@@ -460,9 +465,12 @@
     }
 
     .format-note {
-      color: #aab4c2;
       font-size: 12px;
       line-height: 1.6;
+    }
+
+    .preview-stage .format-note {
+      color: #667085;
     }
 
     .hidden-file {
@@ -477,6 +485,7 @@
           "colors"
           "preview"
           "code";
+        background: none;
       }
 
       .yaml-editor {
@@ -603,7 +612,7 @@
               </div>
             </div>
             <div class="format-note">
-              导出默认使用小狼毫兼容的 0xRRGGBB 格式。支持输入 #RRGGBB、0xRRGGBB、rgb(r, g, b) 和 r,g,b。
+              导出默认使用小狼毫兼容的 0xBBGGRR 格式。支持输入 #RRGGBB、0xBBGGRR、rgb(r, g, b) 和 r,g,b。
             </div>
           </div>
         </div>
@@ -618,17 +627,17 @@
     custom:
       name: 自定义皮肤
       author: Rime Skin Designer
-      back_color: 0xF8F1D8
-      border_color: 0xD6C89C
-      text_color: 0x2F3640
+      back_color: 0xD8F1F8
+      border_color: 0x9CC8D6
+      text_color: 0x40362F
       hilited_text_color: 0xFFFFFF
-      hilited_back_color: 0xE67E22
-      candidate_text_color: 0x3B4252
+      hilited_back_color: 0x227EE6
+      candidate_text_color: 0x52423B
       hilited_candidate_text_color: 0xFFFFFF
-      hilited_candidate_back_color: 0xE67E22
-      comment_text_color: 0x7F8C8D
+      hilited_candidate_back_color: 0x227EE6
+      comment_text_color: 0x8D8C7F
       hilited_comment_text_color: 0xFFFFFF
-      label_color: 0x5D6673
+      label_color: 0x73665D
       hilited_label_color: 0xFFFFFF
 `;
 
@@ -636,6 +645,7 @@
       back_color: "候选窗背景",
       border_color: "候选窗边框",
       text_color: "编码文本",
+      candidate_back_color: "候选背景",
       candidate_text_color: "候选文字",
       hilited_candidate_text_color: "高亮候选文字",
       hilited_candidate_back_color: "高亮候选背景",
@@ -646,6 +656,29 @@
       label_color: "序号文字",
       hilited_label_color: "高亮序号文字"
     };
+
+    const fieldGroups = [
+      {
+        title: "输入法窗口",
+        note: "整体候选窗与输入编码",
+        keys: ["back_color", "border_color", "text_color"]
+      },
+      {
+        title: "高亮候选词",
+        note: "当前选中的候选项",
+        keys: ["hilited_candidate_back_color", "hilited_candidate_text_color", "hilited_label_color", "hilited_comment_text_color"]
+      },
+      {
+        title: "其他候选词",
+        note: "未选中的候选项",
+        keys: ["candidate_back_color", "candidate_text_color", "label_color", "comment_text_color"]
+      },
+      {
+        title: "高亮编码",
+        note: "编码区选中状态",
+        keys: ["hilited_back_color", "hilited_text_color"]
+      }
+    ];
 
     const fallbackColors = {
       back_color: "#F8F1D8",
@@ -710,7 +743,8 @@
     }
 
     function hexToWeasel(hex) {
-      return `0x${hex.replace("#", "").toUpperCase()}`;
+      const value = hex.replace("#", "").toUpperCase();
+      return `0x${value.slice(4, 6)}${value.slice(2, 4)}${value.slice(0, 2)}`;
     }
 
     function rgbToInput(rgb) {
@@ -720,7 +754,7 @@
     function parseColor(value) {
       const raw = String(value || "").trim().replace(/["']/g, "");
       let match = raw.match(/^0x([0-9a-fA-F]{6})$/);
-      if (match) return hexStringToRgb(match[1]);
+      if (match) return weaselHexToRgb(match[1]);
 
       match = raw.match(/^#([0-9a-fA-F]{6})$/);
       if (match) return hexStringToRgb(match[1]);
@@ -739,6 +773,14 @@
         r: parseInt(hex.slice(0, 2), 16),
         g: parseInt(hex.slice(2, 4), 16),
         b: parseInt(hex.slice(4, 6), 16)
+      };
+    }
+
+    function weaselHexToRgb(hex) {
+      return {
+        r: parseInt(hex.slice(4, 6), 16),
+        g: parseInt(hex.slice(2, 4), 16),
+        b: parseInt(hex.slice(0, 2), 16)
       };
     }
 
@@ -832,11 +874,16 @@
         return;
       }
 
-      state.fields.forEach((field) => {
-        const row = document.createElement("div");
-        row.className = "color-row";
-        row.dataset.key = field.key;
-        row.innerHTML = `
+      groupFieldsForDisplay().forEach((group) => {
+        const groupEl = document.createElement("section");
+        groupEl.className = "color-group";
+        groupEl.innerHTML = `<div class="color-group-title">${group.title}<span>${group.note}</span></div>`;
+
+        group.fields.forEach((field) => {
+          const row = document.createElement("div");
+          row.className = "color-row";
+          row.dataset.key = field.key;
+          row.innerHTML = `
           <div class="color-row-content">
             <div class="color-meta">
               <div class="swatch" data-role="swatch"></div>
@@ -856,25 +903,53 @@
               <input type="text" data-role="rgb" aria-label="RGB 输入">
             </div>
           </div>
-          <div class="field-error">颜色格式无效，请输入 #RRGGBB、0xRRGGBB、rgb(r, g, b) 或 r,g,b。</div>
+          <div class="field-error">颜色格式无效，请输入 #RRGGBB、0xBBGGRR、rgb(r, g, b) 或 r,g,b。</div>
         `;
 
-        row.querySelector(".field-name").textContent = field.key;
-        row.querySelector(".field-label").textContent = field.label;
-        syncRowInputs(row, field.hex);
+          row.querySelector(".field-name").textContent = field.key;
+          row.querySelector(".field-label").textContent = field.label;
+          syncRowInputs(row, field.hex);
 
-        row.querySelector('[data-role="picker"]').addEventListener("input", (event) => {
-          applyColorChange(field.key, event.target.value, row);
-        });
-        row.querySelector('[data-role="hex"]').addEventListener("change", (event) => {
-          applyColorChange(field.key, event.target.value, row);
-        });
-        row.querySelector('[data-role="rgb"]').addEventListener("change", (event) => {
-          applyColorChange(field.key, event.target.value, row);
+          row.querySelector('[data-role="picker"]').addEventListener("input", (event) => {
+            applyColorChange(field.key, event.target.value, row);
+          });
+          row.querySelector('[data-role="hex"]').addEventListener("change", (event) => {
+            applyColorChange(field.key, event.target.value, row);
+          });
+          row.querySelector('[data-role="rgb"]').addEventListener("change", (event) => {
+            applyColorChange(field.key, event.target.value, row);
+          });
+
+          groupEl.appendChild(row);
         });
 
-        els.colorList.appendChild(row);
+        els.colorList.appendChild(groupEl);
       });
+    }
+
+    function groupFieldsForDisplay() {
+      const byKey = new Map(state.fields.map((field) => [field.key, field]));
+      const used = new Set();
+      const groups = [];
+
+      fieldGroups.forEach((group) => {
+        const fields = group.keys
+          .map((key) => byKey.get(key))
+          .filter(Boolean);
+        fields.forEach((field) => used.add(field.key));
+        if (fields.length > 0) groups.push({ ...group, fields });
+      });
+
+      const otherFields = state.fields.filter((field) => !used.has(field.key));
+      if (otherFields.length > 0) {
+        groups.push({
+          title: "其他颜色字段",
+          note: "配置中识别出的自定义字段",
+          fields: otherFields
+        });
+      }
+
+      return groups;
     }
 
     function syncRowInputs(row, hex) {
