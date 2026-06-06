@@ -1,0 +1,1068 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rime 小狼毫皮肤在线设计</title>
+  <style>
+    :root {
+      --bg: #eef0f3;
+      --panel: #ffffff;
+      --panel-2: #f7f8fa;
+      --line: #d8dde5;
+      --text: #1d2430;
+      --muted: #667085;
+      --accent: #1d6f9f;
+      --accent-2: #14566f;
+      --danger: #b42318;
+      --mono: Consolas, "SFMono-Regular", "Liberation Mono", Menlo, monospace;
+      font-family: "Microsoft YaHei", "Segoe UI", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      border: 1px solid var(--accent);
+      background: var(--accent);
+      color: #fff;
+      border-radius: 6px;
+      padding: 7px 11px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    button:hover {
+      background: var(--accent-2);
+      border-color: var(--accent-2);
+    }
+
+    button.secondary {
+      background: #fff;
+      color: var(--text);
+      border-color: var(--line);
+    }
+
+    button.secondary:hover {
+      background: #f2f4f7;
+      border-color: #c5ccd8;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 7px 8px;
+      color: var(--text);
+      background: #fff;
+    }
+
+    input[type="color"] {
+      width: 56px;
+      height: 34px;
+      padding: 0;
+      border: 1px solid #9eb7c6;
+      border-radius: 6px;
+      background: transparent;
+      cursor: pointer;
+      opacity: 0;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .title {
+      min-width: 0;
+    }
+
+    .title h1 {
+      margin: 0;
+      font-size: 19px;
+      line-height: 1.25;
+      font-weight: 700;
+    }
+
+    .title p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .status {
+      color: var(--muted);
+      font-size: 13px;
+      text-align: right;
+    }
+
+    .workbench {
+      flex: 1;
+      display: grid;
+      grid-template-columns: minmax(320px, 0.9fr) minmax(420px, 1.1fr);
+      grid-template-rows: minmax(240px, 1fr) minmax(360px, 2fr);
+      grid-template-areas:
+        "colors preview"
+        "colors code";
+      gap: 12px;
+      padding: 12px;
+      min-height: 0;
+    }
+
+    .code-panel {
+      grid-area: code;
+    }
+
+    .colors-panel {
+      grid-area: colors;
+    }
+
+    .preview-panel {
+      grid-area: preview;
+    }
+
+    .panel {
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-2);
+    }
+
+    .panel-head h2 {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.3;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .segmented {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fff;
+    }
+
+    .segmented button {
+      min-width: 44px;
+      border: 0;
+      border-radius: 5px;
+      padding: 5px 8px;
+      background: transparent;
+      color: var(--muted);
+    }
+
+    .segmented button.active {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .body {
+      min-height: 0;
+      flex: 1;
+      padding: 10px;
+      overflow: auto;
+    }
+
+    .yaml-editor {
+      width: 100%;
+      min-height: 100%;
+      height: 100%;
+      resize: none;
+      border: 1px solid #cbd2dd;
+      border-radius: 7px;
+      padding: 12px;
+      background: #ffffff;
+      color: #111827;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.55;
+      tab-size: 2;
+    }
+
+    .color-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .color-row {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 8px;
+    }
+
+    .color-row.invalid {
+      border-color: #f3b5af;
+      background: #fff7f6;
+    }
+
+    .color-meta {
+      display: grid;
+      grid-template-columns: 34px minmax(150px, 1fr);
+      align-items: center;
+      gap: 9px;
+      min-width: 220px;
+      margin-bottom: 0;
+    }
+
+    .swatch {
+      width: 34px;
+      height: 34px;
+      border: 1px solid #cbd2dd;
+      border-radius: 6px;
+    }
+
+    .field-name {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 700;
+      overflow-wrap: anywhere;
+    }
+
+    .field-label {
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .field-inputs {
+      display: grid;
+      grid-template-columns: 62px 1fr 1.1fr;
+      gap: 7px;
+      align-items: center;
+      min-width: 330px;
+    }
+
+    .picker-wrap {
+      position: relative;
+      display: inline-flex;
+      width: 62px;
+      height: 34px;
+      align-items: center;
+      border: 1px solid #a7b6c3;
+      border-radius: 6px;
+      background: #f8fafc;
+      overflow: hidden;
+    }
+
+    .picker-wrap::before {
+      content: "";
+      position: absolute;
+      left: 5px;
+      top: 5px;
+      width: 24px;
+      height: 22px;
+      border: 1px solid #98a2b3;
+      border-radius: 4px;
+      background: var(--current-color, #000);
+      pointer-events: none;
+    }
+
+    .picker-icon {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      color: #475467;
+      pointer-events: none;
+    }
+
+    .picker-wrap:hover {
+      border-color: var(--accent);
+      background: #eef7fa;
+    }
+
+    .color-row-content {
+      display: grid;
+      grid-template-columns: minmax(220px, .8fr) minmax(330px, 1.2fr);
+      gap: 9px;
+      align-items: center;
+    }
+
+    .field-error {
+      display: none;
+      margin-top: 7px;
+      color: var(--danger);
+      font-size: 12px;
+    }
+
+    .invalid .field-error {
+      display: block;
+    }
+
+    .add-field {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 92px;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .empty-note {
+      color: var(--muted);
+      font-size: 14px;
+      padding: 14px;
+      border: 1px dashed #c8cfd9;
+      border-radius: 8px;
+      background: #fbfcfd;
+    }
+
+    .preview-stage {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      padding: 26px 22px;
+      color: #111827;
+      border-radius: 7px;
+    }
+
+    .desktop-line {
+      width: min(100%, 680px);
+      height: 32px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 10px;
+      border: 1px solid #8f95a3;
+      border-bottom: 2px solid #164df5;
+      background: #fff;
+      color: #1f2937;
+      font-family: var(--mono);
+      font-size: 14px;
+    }
+
+    .search-icon {
+      width: 13px;
+      height: 13px;
+      border: 1.7px solid #475467;
+      border-radius: 999px;
+      position: relative;
+      flex: 0 0 auto;
+    }
+
+    .search-icon::after {
+      content: "";
+      position: absolute;
+      width: 6px;
+      height: 1.7px;
+      right: -5px;
+      bottom: -3px;
+      background: #475467;
+      transform: rotate(45deg);
+      border-radius: 999px;
+    }
+
+    .candidate-window {
+      width: min(100%, 680px);
+      border: 1px solid transparent;
+      border-radius: 0 0 7px 7px;
+      padding: 5px 8px 7px;
+      box-shadow: none;
+    }
+
+    .composition {
+      display: none;
+      margin: 0;
+      padding: 0;
+      font-family: var(--mono);
+      font-size: 14px;
+    }
+
+    .candidate-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      align-items: center;
+      font-size: 18px;
+      line-height: 1.45;
+    }
+
+    .candidate-list.vertical {
+      display: grid;
+      align-items: stretch;
+      gap: 2px;
+    }
+
+    .candidate {
+      display: inline-flex;
+      gap: 5px;
+      align-items: center;
+      min-height: 30px;
+      padding: 0 7px;
+      border-radius: 0;
+      white-space: nowrap;
+    }
+
+    .candidate-list.vertical .candidate {
+      width: max-content;
+      min-width: 220px;
+    }
+
+    .candidate-list.vertical .candidate-comment {
+      display: inline;
+    }
+
+    .candidate-word {
+      font-weight: 400;
+    }
+
+    .candidate-comment {
+      display: none;
+      font-size: 12px;
+    }
+
+    .format-note {
+      color: #aab4c2;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .hidden-file {
+      display: none;
+    }
+
+    @media (max-width: 1080px) {
+      .workbench {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        grid-template-areas:
+          "colors"
+          "preview"
+          "code";
+      }
+
+      .yaml-editor {
+        height: 420px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .status {
+        text-align: left;
+      }
+
+      .panel-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .field-inputs,
+      .color-row-content,
+      .add-field {
+        grid-template-columns: 1fr;
+        min-width: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="title">
+        <h1>Rime 小狼毫皮肤在线设计</h1>
+        <p>粘贴或导入 weasel.custom.yaml，修改颜色并实时预览候选窗效果。</p>
+      </div>
+      <div class="status" id="status">准备就绪</div>
+    </header>
+
+    <main class="workbench">
+      <section class="panel code-panel">
+        <div class="panel-head">
+          <h2>预设代码</h2>
+          <div class="actions">
+            <input class="hidden-file" id="fileInput" type="file" accept=".yaml,.yml,.txt,text/yaml,text/plain">
+            <button type="button" class="secondary" id="importButton">导入文件</button>
+            <button type="button" class="secondary" id="exampleButton">加载示例</button>
+            <button type="button" id="parseButton">解析颜色</button>
+          </div>
+        </div>
+        <div class="body">
+          <textarea id="yamlInput" class="yaml-editor" spellcheck="false"></textarea>
+        </div>
+      </section>
+
+      <section class="panel colors-panel">
+        <div class="panel-head">
+          <div>
+            <h2>颜色控制</h2>
+          </div>
+          <div class="actions">
+            <span id="fieldCount" class="status">0 项</span>
+          </div>
+        </div>
+        <div class="body">
+          <div class="add-field">
+            <input id="newFieldName" type="text" placeholder="新增字段，如 shadow_color">
+            <button type="button" class="secondary" id="addFieldButton">新增</button>
+          </div>
+          <div id="colorList" class="color-list"></div>
+        </div>
+      </section>
+
+      <section class="panel preview-panel">
+        <div class="panel-head">
+          <h2>实时预览</h2>
+          <div class="actions">
+            <div class="segmented" aria-label="候选词排列方向">
+              <button type="button" id="verticalPreviewButton">竖排</button>
+              <button type="button" id="horizontalPreviewButton" class="active">横排</button>
+            </div>
+            <button type="button" class="secondary" id="copyButton">复制 YAML</button>
+            <button type="button" id="downloadButton">下载 YAML</button>
+          </div>
+        </div>
+        <div class="body">
+          <div class="preview-stage">
+            <div class="desktop-line"><span class="search-icon"></span><span>dang wo m dou hui jia d shi h</span></div>
+            <div class="candidate-window" id="candidateWindow">
+              <div class="composition" id="compositionText">dang wo m dou hui jia d shi h</div>
+              <div class="candidate-list" id="candidateList">
+                <div class="candidate" id="candidateOne">
+                  <span class="candidate-label">1.</span>
+                  <span class="candidate-word">当我们都回家的时候</span>
+                  <span class="candidate-comment">dang wo men dou hui jia de shi hou</span>
+                </div>
+                <div class="candidate" id="candidateTwo">
+                  <span class="candidate-label">2.</span>
+                  <span class="candidate-word">当我们</span>
+                  <span class="candidate-comment">dang wo men</span>
+                </div>
+                <div class="candidate" id="candidateThree">
+                  <span class="candidate-label">3.</span>
+                  <span class="candidate-word">当我面</span>
+                  <span class="candidate-comment">dang wo mian</span>
+                </div>
+                <div class="candidate" id="candidateFour">
+                  <span class="candidate-label">4.</span>
+                  <span class="candidate-word">当我</span>
+                  <span class="candidate-comment">dang wo</span>
+                </div>
+                <div class="candidate" id="candidateFive">
+                  <span class="candidate-label">5.</span>
+                  <span class="candidate-word">但给我</span>
+                  <span class="candidate-comment">dan gei wo</span>
+                </div>
+                <div class="candidate" id="candidateSix">
+                  <span class="candidate-label">6.</span>
+                  <span class="candidate-word">但跟我</span>
+                  <span class="candidate-comment">dan gen wo</span>
+                </div>
+              </div>
+            </div>
+            <div class="format-note">
+              导出默认使用小狼毫兼容的 0xRRGGBB 格式。支持输入 #RRGGBB、0xRRGGBB、rgb(r, g, b) 和 r,g,b。
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const defaultYaml = `patch:
+  style/color_scheme: custom
+  preset_color_schemes:
+    custom:
+      name: 自定义皮肤
+      author: Rime Skin Designer
+      back_color: 0xF8F1D8
+      border_color: 0xD6C89C
+      text_color: 0x2F3640
+      hilited_text_color: 0xFFFFFF
+      hilited_back_color: 0xE67E22
+      candidate_text_color: 0x3B4252
+      hilited_candidate_text_color: 0xFFFFFF
+      hilited_candidate_back_color: 0xE67E22
+      comment_text_color: 0x7F8C8D
+      hilited_comment_text_color: 0xFFFFFF
+      label_color: 0x5D6673
+      hilited_label_color: 0xFFFFFF
+`;
+
+    const labels = {
+      back_color: "候选窗背景",
+      border_color: "候选窗边框",
+      text_color: "编码文本",
+      candidate_text_color: "候选文字",
+      hilited_candidate_text_color: "高亮候选文字",
+      hilited_candidate_back_color: "高亮候选背景",
+      hilited_text_color: "高亮编码文本",
+      hilited_back_color: "高亮编码背景",
+      comment_text_color: "注释文字",
+      hilited_comment_text_color: "高亮注释文字",
+      label_color: "序号文字",
+      hilited_label_color: "高亮序号文字"
+    };
+
+    const fallbackColors = {
+      back_color: "#F8F1D8",
+      border_color: "#D6C89C",
+      text_color: "#2F3640",
+      hilited_text_color: "#FFFFFF",
+      hilited_back_color: "#E67E22",
+      candidate_text_color: "#3B4252",
+      hilited_candidate_text_color: "#FFFFFF",
+      hilited_candidate_back_color: "#E67E22",
+      comment_text_color: "#7F8C8D",
+      hilited_comment_text_color: "#FFFFFF",
+      label_color: "#5D6673",
+      hilited_label_color: "#FFFFFF"
+    };
+
+    const state = {
+      fields: [],
+      colors: new Map()
+    };
+
+    const els = {
+      yamlInput: document.getElementById("yamlInput"),
+      fileInput: document.getElementById("fileInput"),
+      importButton: document.getElementById("importButton"),
+      exampleButton: document.getElementById("exampleButton"),
+      parseButton: document.getElementById("parseButton"),
+      colorList: document.getElementById("colorList"),
+      fieldCount: document.getElementById("fieldCount"),
+      status: document.getElementById("status"),
+      newFieldName: document.getElementById("newFieldName"),
+      addFieldButton: document.getElementById("addFieldButton"),
+      copyButton: document.getElementById("copyButton"),
+      downloadButton: document.getElementById("downloadButton"),
+      candidateWindow: document.getElementById("candidateWindow"),
+      candidateList: document.getElementById("candidateList"),
+      compositionText: document.getElementById("compositionText"),
+      candidateOne: document.getElementById("candidateOne"),
+      candidateTwo: document.getElementById("candidateTwo"),
+      candidateThree: document.getElementById("candidateThree"),
+      candidateFour: document.getElementById("candidateFour"),
+      candidateFive: document.getElementById("candidateFive"),
+      candidateSix: document.getElementById("candidateSix"),
+      verticalPreviewButton: document.getElementById("verticalPreviewButton"),
+      horizontalPreviewButton: document.getElementById("horizontalPreviewButton")
+    };
+
+    function setStatus(message) {
+      els.status.textContent = message;
+    }
+
+    function clampByte(value) {
+      return Math.max(0, Math.min(255, value));
+    }
+
+    function toHexByte(value) {
+      return clampByte(value).toString(16).padStart(2, "0").toUpperCase();
+    }
+
+    function rgbToHex(rgb) {
+      return `#${toHexByte(rgb.r)}${toHexByte(rgb.g)}${toHexByte(rgb.b)}`;
+    }
+
+    function hexToWeasel(hex) {
+      return `0x${hex.replace("#", "").toUpperCase()}`;
+    }
+
+    function rgbToInput(rgb) {
+      return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+    }
+
+    function parseColor(value) {
+      const raw = String(value || "").trim().replace(/["']/g, "");
+      let match = raw.match(/^0x([0-9a-fA-F]{6})$/);
+      if (match) return hexStringToRgb(match[1]);
+
+      match = raw.match(/^#([0-9a-fA-F]{6})$/);
+      if (match) return hexStringToRgb(match[1]);
+
+      match = raw.match(/^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i);
+      if (match) return parseRgbParts(match.slice(1));
+
+      match = raw.match(/^(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})$/);
+      if (match) return parseRgbParts(match.slice(1));
+
+      return null;
+    }
+
+    function hexStringToRgb(hex) {
+      return {
+        r: parseInt(hex.slice(0, 2), 16),
+        g: parseInt(hex.slice(2, 4), 16),
+        b: parseInt(hex.slice(4, 6), 16)
+      };
+    }
+
+    function parseRgbParts(parts) {
+      const values = parts.map((part) => Number(part));
+      if (values.some((value) => !Number.isInteger(value) || value < 0 || value > 255)) {
+        return null;
+      }
+      return { r: values[0], g: values[1], b: values[2] };
+    }
+
+    function extractYamlColor(rest) {
+      const value = String(rest || "").trim();
+      let match = value.match(/^"([^"]*)"(.*)$/);
+      if (match) {
+        const rgb = parseColor(match[1]);
+        return rgb ? { rgb, suffix: match[2] || "" } : null;
+      }
+
+      match = value.match(/^'([^']*)'(.*)$/);
+      if (match) {
+        const rgb = parseColor(match[1]);
+        return rgb ? { rgb, suffix: match[2] || "" } : null;
+      }
+
+      const patterns = [
+        /^(0x[0-9a-fA-F]{6})(.*)$/,
+        /^(#[0-9a-fA-F]{6})(.*)$/,
+        /^(rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\))(.*)$/i,
+        /^(\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3})(.*)$/
+      ];
+
+      for (const pattern of patterns) {
+        match = value.match(pattern);
+        if (!match) continue;
+        const rgb = parseColor(match[1]);
+        if (rgb) return { rgb, suffix: match[2] || "" };
+      }
+
+      return null;
+    }
+
+    function getColor(key) {
+      return state.colors.get(key) || fallbackColors[key] || "#000000";
+    }
+
+    function parseYamlColors() {
+      const lines = els.yamlInput.value.split(/\r?\n/);
+      const fields = [];
+      const colorLine = /^(\s*)([A-Za-z0-9_\/.-]*_color)\s*:\s*(.*)$/;
+
+      lines.forEach((line, index) => {
+        const match = line.match(colorLine);
+        if (!match) return;
+
+        const key = match[2];
+        const parsed = extractYamlColor(match[3]);
+        if (!parsed) return;
+
+        fields.push({
+          key,
+          label: labels[key] || "自定义颜色字段",
+          lineIndex: index,
+          indent: match[1],
+          suffix: parsed.suffix || "",
+          hex: rgbToHex(parsed.rgb)
+        });
+      });
+
+      state.fields = fields;
+      state.colors = new Map(fields.map((field) => [field.key, field.hex]));
+      renderColorControls();
+      updatePreview();
+
+      if (fields.length === 0) {
+        setStatus("未识别到颜色字段");
+      } else {
+        setStatus(`已识别 ${fields.length} 个颜色字段`);
+      }
+    }
+
+    function renderColorControls() {
+      els.fieldCount.textContent = `${state.fields.length} 项`;
+      els.colorList.innerHTML = "";
+
+      if (state.fields.length === 0) {
+        const note = document.createElement("div");
+        note.className = "empty-note";
+        note.textContent = "未识别到颜色字段。请粘贴包含 _color 字段的 weasel.custom.yaml，或加载示例。";
+        els.colorList.appendChild(note);
+        return;
+      }
+
+      state.fields.forEach((field) => {
+        const row = document.createElement("div");
+        row.className = "color-row";
+        row.dataset.key = field.key;
+        row.innerHTML = `
+          <div class="color-row-content">
+            <div class="color-meta">
+              <div class="swatch" data-role="swatch"></div>
+              <div>
+                <div class="field-name"></div>
+                <div class="field-label"></div>
+              </div>
+            </div>
+            <div class="field-inputs">
+              <span class="picker-wrap">
+                <input type="color" data-role="picker" aria-label="颜色选择器">
+                <svg class="picker-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M14.7 4.3a1 1 0 0 1 1.4 0l3.6 3.6a1 1 0 0 1 0 1.4l-2 2 1 1-1.4 1.4-1-1-6.6 6.6a2.4 2.4 0 0 1-1.7.7H5l.5-3a2.4 2.4 0 0 1 .7-1.4l6.6-6.6-1-1 1.4-1.4 1 1 2.5-2.5-2.2-2.2-1.8 1.8-1.4-1.4 2.9-3Z" fill="currentColor"/>
+                </svg>
+              </span>
+              <input type="text" data-role="hex" aria-label="HEX 输入">
+              <input type="text" data-role="rgb" aria-label="RGB 输入">
+            </div>
+          </div>
+          <div class="field-error">颜色格式无效，请输入 #RRGGBB、0xRRGGBB、rgb(r, g, b) 或 r,g,b。</div>
+        `;
+
+        row.querySelector(".field-name").textContent = field.key;
+        row.querySelector(".field-label").textContent = field.label;
+        syncRowInputs(row, field.hex);
+
+        row.querySelector('[data-role="picker"]').addEventListener("input", (event) => {
+          applyColorChange(field.key, event.target.value, row);
+        });
+        row.querySelector('[data-role="hex"]').addEventListener("change", (event) => {
+          applyColorChange(field.key, event.target.value, row);
+        });
+        row.querySelector('[data-role="rgb"]').addEventListener("change", (event) => {
+          applyColorChange(field.key, event.target.value, row);
+        });
+
+        els.colorList.appendChild(row);
+      });
+    }
+
+    function syncRowInputs(row, hex) {
+      const rgb = parseColor(hex);
+      row.classList.remove("invalid");
+      row.querySelector('[data-role="swatch"]').style.background = hex;
+      row.querySelector(".picker-wrap").style.setProperty("--current-color", hex);
+      row.querySelector('[data-role="picker"]').value = hex;
+      row.querySelector('[data-role="hex"]').value = hex;
+      row.querySelector('[data-role="rgb"]').value = rgbToInput(rgb);
+    }
+
+    function applyColorChange(key, rawValue, row) {
+      const rgb = parseColor(rawValue);
+      if (!rgb) {
+        row.classList.add("invalid");
+        setStatus(`${key} 的颜色格式无效`);
+        return;
+      }
+
+      const hex = rgbToHex(rgb);
+      state.colors.set(key, hex);
+      const field = state.fields.find((item) => item.key === key);
+      if (field) {
+        field.hex = hex;
+        writeColorToYaml(field, hex);
+      }
+
+      syncRowInputs(row, hex);
+      updatePreview();
+      setStatus(`已更新 ${key}`);
+    }
+
+    function writeColorToYaml(field, hex) {
+      const lines = els.yamlInput.value.split(/\r?\n/);
+      const original = lines[field.lineIndex] || "";
+      const commentMatch = original.match(/(\s+#.*)$/);
+      const suffix = commentMatch ? commentMatch[1] : field.suffix;
+      lines[field.lineIndex] = `${field.indent}${field.key}: ${hexToWeasel(hex)}${suffix || ""}`;
+      els.yamlInput.value = lines.join("\n");
+    }
+
+    function addColorField() {
+      const key = els.newFieldName.value.trim();
+      if (!/^[A-Za-z0-9_\/.-]*_color$/.test(key)) {
+        setStatus("新增字段名必须以 _color 结尾");
+        return;
+      }
+
+      if (state.fields.some((field) => field.key === key)) {
+        setStatus(`${key} 已存在`);
+        return;
+      }
+
+      const lines = els.yamlInput.value.split(/\r?\n/);
+      const insert = findColorInsertPoint(lines);
+      const line = `${insert.indent}${key}: 0x000000`;
+      lines.splice(insert.index, 0, line);
+      els.yamlInput.value = lines.join("\n");
+      els.newFieldName.value = "";
+      parseYamlColors();
+      setStatus(`已新增 ${key}`);
+    }
+
+    function findColorInsertPoint(lines) {
+      let lastColorIndex = -1;
+      let indent = "      ";
+      lines.forEach((line, index) => {
+        const match = line.match(/^(\s*)[A-Za-z0-9_\/.-]*_color\s*:/);
+        if (match) {
+          lastColorIndex = index;
+          indent = match[1];
+        }
+      });
+
+      if (lastColorIndex >= 0) {
+        return { index: lastColorIndex + 1, indent };
+      }
+
+      return { index: lines.length, indent };
+    }
+
+    function updatePreview() {
+      const back = getColor("back_color");
+      const border = getColor("border_color");
+      const text = getColor("text_color");
+      const hilitedText = getColor("hilited_text_color");
+      const hilitedBack = getColor("hilited_back_color");
+      const candidateText = getColor("candidate_text_color");
+      const hilitedCandidateText = getColor("hilited_candidate_text_color");
+      const hilitedCandidateBack = getColor("hilited_candidate_back_color");
+      const comment = getColor("comment_text_color");
+      const hilitedComment = getColor("hilited_comment_text_color");
+      const label = getColor("label_color");
+      const hilitedLabel = getColor("hilited_label_color");
+
+      els.candidateWindow.style.background = back;
+      els.candidateWindow.style.borderColor = border;
+      els.compositionText.style.color = text;
+      els.compositionText.style.background = hilitedBack;
+      els.compositionText.style.color = hilitedText;
+
+      [els.candidateTwo, els.candidateThree, els.candidateFour, els.candidateFive, els.candidateSix].forEach((item) => {
+        item.style.background = "transparent";
+        item.querySelector(".candidate-label").style.color = label;
+        item.querySelector(".candidate-word").style.color = candidateText;
+        item.querySelector(".candidate-comment").style.color = comment;
+      });
+
+      els.candidateOne.style.background = hilitedCandidateBack;
+      els.candidateOne.querySelector(".candidate-label").style.color = hilitedLabel;
+      els.candidateOne.querySelector(".candidate-word").style.color = hilitedCandidateText;
+      els.candidateOne.querySelector(".candidate-comment").style.color = hilitedComment;
+    }
+
+    function importFile(file) {
+      if (!file) return;
+
+      const allowed = /\.(ya?ml|txt)$/i.test(file.name);
+      if (!allowed) {
+        setStatus("只支持 .yaml、.yml 或 .txt 文件");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        els.yamlInput.value = String(reader.result || "");
+        parseYamlColors();
+        setStatus(`已导入 ${file.name}`);
+      };
+      reader.onerror = () => {
+        setStatus("文件读取失败");
+      };
+      reader.readAsText(file, "utf-8");
+    }
+
+    async function copyYaml() {
+      const text = els.yamlInput.value;
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          els.yamlInput.focus();
+          els.yamlInput.select();
+          document.execCommand("copy");
+        }
+        setStatus("YAML 已复制");
+      } catch (error) {
+        setStatus("复制失败，请手动复制左侧文本");
+      }
+    }
+
+    function downloadYaml() {
+      const blob = new Blob([els.yamlInput.value], { type: "text/yaml;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "weasel.custom.yaml";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      setStatus("已生成下载文件");
+    }
+
+    function setPreviewOrientation(orientation) {
+      const vertical = orientation === "vertical";
+      els.candidateList.classList.toggle("vertical", vertical);
+      els.verticalPreviewButton.classList.toggle("active", vertical);
+      els.horizontalPreviewButton.classList.toggle("active", !vertical);
+      setStatus(vertical ? "预览已切换为竖排" : "预览已切换为横排");
+    }
+
+    els.importButton.addEventListener("click", () => els.fileInput.click());
+    els.fileInput.addEventListener("change", (event) => importFile(event.target.files[0]));
+    els.exampleButton.addEventListener("click", () => {
+      els.yamlInput.value = defaultYaml;
+      parseYamlColors();
+      setStatus("已加载示例配置");
+    });
+    els.parseButton.addEventListener("click", parseYamlColors);
+    els.addFieldButton.addEventListener("click", addColorField);
+    els.copyButton.addEventListener("click", copyYaml);
+    els.downloadButton.addEventListener("click", downloadYaml);
+    els.verticalPreviewButton.addEventListener("click", () => setPreviewOrientation("vertical"));
+    els.horizontalPreviewButton.addEventListener("click", () => setPreviewOrientation("horizontal"));
+    els.yamlInput.value = defaultYaml;
+    parseYamlColors();
+  </script>
+</body>
+</html>
