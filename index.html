@@ -83,9 +83,10 @@
     }
 
     .topbar {
+      position: relative;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
       gap: 16px;
       padding: 14px 18px;
       border-bottom: 1px solid transparent;
@@ -93,6 +94,7 @@
 
     .title {
       min-width: 0;
+      text-align: center;
     }
 
     .title h1 {
@@ -112,6 +114,13 @@
       color: #000;
       font-size: 13px;
       text-align: right;
+    }
+
+    .topbar > .status {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
     }
 
     .workbench {
@@ -163,6 +172,12 @@
       margin: 0;
       font-size: 15px;
       line-height: 1.3;
+    }
+
+    .panel-hint {
+      margin-top: 3px;
+      color: #000;
+      font-size: 12px;
     }
 
     .actions {
@@ -503,6 +518,11 @@
         text-align: left;
       }
 
+      .topbar > .status {
+        position: static;
+        transform: none;
+      }
+
       .panel-head {
         align-items: flex-start;
         flex-direction: column;
@@ -530,12 +550,14 @@
     <main class="workbench">
       <section class="panel code-panel">
         <div class="panel-head">
-          <h2>预设代码</h2>
+          <div>
+            <h2>预设代码</h2>
+            <div class="panel-hint">可直接粘贴 weasel.custom.yaml 代码，粘贴后会自动解析并生效。</div>
+          </div>
           <div class="actions">
             <input class="hidden-file" id="fileInput" type="file" accept=".yaml,.yml,.txt,text/yaml,text/plain">
             <button type="button" class="secondary" id="importButton">导入文件</button>
             <button type="button" class="secondary" id="exampleButton">加载示例</button>
-            <button type="button" id="parseButton">解析颜色</button>
           </div>
         </div>
         <div class="body">
@@ -705,7 +727,6 @@
       fileInput: document.getElementById("fileInput"),
       importButton: document.getElementById("importButton"),
       exampleButton: document.getElementById("exampleButton"),
-      parseButton: document.getElementById("parseButton"),
       colorList: document.getElementById("colorList"),
       fieldCount: document.getElementById("fieldCount"),
       status: document.getElementById("status"),
@@ -911,12 +932,12 @@
           syncRowInputs(row, field.hex);
 
           row.querySelector('[data-role="picker"]').addEventListener("input", (event) => {
+          applyColorChange(field.key, event.target.value, row);
+        });
+          row.querySelector('[data-role="hex"]').addEventListener("input", (event) => {
             applyColorChange(field.key, event.target.value, row);
           });
-          row.querySelector('[data-role="hex"]').addEventListener("change", (event) => {
-            applyColorChange(field.key, event.target.value, row);
-          });
-          row.querySelector('[data-role="rgb"]').addEventListener("change", (event) => {
+          row.querySelector('[data-role="rgb"]').addEventListener("input", (event) => {
             applyColorChange(field.key, event.target.value, row);
           });
 
@@ -1130,7 +1151,7 @@
       parseYamlColors();
       setStatus("已加载示例配置");
     });
-    els.parseButton.addEventListener("click", parseYamlColors);
+    els.yamlInput.addEventListener("input", parseYamlColors);
     els.addFieldButton.addEventListener("click", addColorField);
     els.copyButton.addEventListener("click", copyYaml);
     els.downloadButton.addEventListener("click", downloadYaml);
