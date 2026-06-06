@@ -4,6 +4,12 @@
 
 ## 使用方式
 
+在线使用：
+
+```text
+https://jackywongx.github.io/rime_skin/
+```
+
 直接用浏览器打开：
 
 ```text
